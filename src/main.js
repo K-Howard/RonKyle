@@ -17,7 +17,7 @@ var makeQuote = document.querySelector('#poster-quote');
 var makePoster = document.querySelector('.make-poster');
 var saveThePoster = document.querySelector('.save-poster');
 var grid = document.querySelector('.saved-posters-grid');
-var miniPoster = document.querySelector('mini-poster');
+// var miniPoster;
 var mySavedPosters = [];
 var currentPoster;
 
@@ -160,13 +160,9 @@ backToMain.addEventListener('click', function() {
   console.log(mySavedPosters);
 });
 
-// miniPoster.addEventListener('dblclick', function(event) {
-//   event.preventDefault();
-//   hidePoster();
-//   showSaved();
-//   showGrid();
-//   deletePoster();
-// })
+grid.addEventListener('onclick', function() {
+  deletePoster();
+});
 
 // functions and event handlers go here 👇
 // (we've provided one for you to get you started)!
@@ -213,6 +209,16 @@ function showGrid() {
     </section>`
   }
   grid.innerHTML = htmlElem;
+};
+
+function deletePoster() {
+  var removeElem = '';
+  for(var i = 0; i < mySavedPosters.length; i++) {
+    removeElem -= `
+    <section class = "delete">
+    </sectin>`
+  };
+  grid.innerHTML = removeElem
 };
 
 function randPoster() {
