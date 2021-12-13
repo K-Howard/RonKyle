@@ -17,7 +17,6 @@ var makeQuote = document.querySelector('#poster-quote');
 var makePoster = document.querySelector('.make-poster');
 var saveThePoster = document.querySelector('.save-poster');
 var grid = document.querySelector('.saved-posters-grid');
-// var miniPoster;
 var mySavedPosters = [];
 var currentPoster;
 
@@ -125,7 +124,6 @@ var quotes = [
 
 saveThePoster.addEventListener('click', function(){
   saveMyPoster();
-  // hidePoster();
 });
 
 makePoster.addEventListener('click', function(event){
@@ -148,7 +146,7 @@ showMain.addEventListener('click', function() {
 });
 
 savedPostersButton.addEventListener('click', function(event) {
- event.preventDefault()
+  event.preventDefault()
   hidePoster();
   showSaved();
   showGrid();
@@ -160,19 +158,17 @@ backToMain.addEventListener('click', function() {
   console.log(mySavedPosters);
 });
 
-grid.addEventListener('onclick', function() {
+grid.addEventListener('dblclick', function(event) {
+  event.preventDefault();
   deletePoster();
 });
-
 // functions and event handlers go here 👇
 // (we've provided one for you to get you started)!
 
 function saveMyPoster() {
-
-  if(!mySavedPosters.includes(currentPoster)) {
+  if (!mySavedPosters.includes(currentPoster)) {
     mySavedPosters.push(currentPoster);
   }
-
 };
 
 function getRandomIndex(array) {
@@ -189,43 +185,53 @@ function showForm() {
 
 function showSaved() {
   savedPosters.classList.toggle("hidden");
+
 };
+
 function makeYourOwn() {
-//console.log('makeYourOwn')
   postImg.src = makeImage.value
   postTitle.innerText = makeTitle.value
   postQuote.innerText = makeQuote.value
-  currentPoster = new Poster(postImg.src, postTitle.innerText, postQuote.innerText);
+  storePoster();
 };
 
 function showGrid() {
   var htmlElem = '';
-  for(var i = 0; i < mySavedPosters.length; i++) {
+
+  for (var i = 0; i < mySavedPosters.length; i++) {
     htmlElem += `
-    <section class = "mini-poster">
-      <img src="${mySavedPosters[i].imageURL}"alt="images">
+    <section class="mini-poster" id=${mySavedPosters[i].id}>
+      <img src="${mySavedPosters[i].imageURL}" alt="images">
       <h2>${mySavedPosters[i].title}</h2>
       <h3>${mySavedPosters[i].quote}</h3>
     </section>`
   }
+
   grid.innerHTML = htmlElem;
 };
 
 function deletePoster() {
-  var removeElem = '';
-  for(var i = 0; i < mySavedPosters.length; i++) {
-    removeElem -= `
-    <section class = "delete">
-    </sectin>`
-  };
-  grid.innerHTML = removeElem
+  var dC = event.target.parentNode.id;
+
+  for (var i = 0; i < mySavedPosters.length; i++) {
+    if (mySavedPosters[i].id.toString() === dC) {
+     mySavedPosters.splice(i, 1);
+     }
+   };
+
+   showGrid();
 };
+
+function storePoster() {
+  currentPoster = new Poster(postImg.src, postTitle.innerText, postQuote.innerText);
+}
 
 function randPoster() {
   postImg.src = images[getRandomIndex(images)];
   postTitle.innerText = titles[getRandomIndex(titles)];
   postQuote.innerText = quotes[getRandomIndex(quotes)];
-  currentPoster = new Poster(postImg.src, postTitle.innerText, postQuote.innerText);
+
+  storePoster();
 };
 
 randPoster();
